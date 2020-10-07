@@ -1,4 +1,5 @@
 import datetime
+import random
 
 import psycopg2
 import pandas as pd
@@ -44,7 +45,9 @@ def get_predict(df):
     save = pd.DataFrame(columns=['time', 'lstm_predict'])
     predicted = model.predict(ohlcv_histories_normalised)
     predicted = y_normaliser.inverse_transform(predicted)
-
+    delta = 0.00075
+    delta = random.uniform(0.0007, 0.002)
+    delta = 0
     for i in range(len(predicted)):
 
         predicted_lstm_value = predicted[i][0].copy()
@@ -54,7 +57,7 @@ def get_predict(df):
             predicted_time = df['time'][history_points + i:].values[0].copy() + pd.Timedelta('1 days')
 
         buf = pd.DataFrame([{'time': predicted_time,
-                             'lstm_predict': predicted_lstm_value + 0.00075}])
+                             'lstm_predict': predicted_lstm_value + delta}])
         save = save.append(buf)
 
     return save

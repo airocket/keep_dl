@@ -25,7 +25,7 @@ def market_data(first_start):
     data.drop(['ts'], axis='columns', inplace=True)
     data = data.sort_values(0)
     data.reset_index(drop=True, inplace=True)
-
+    data = data[11:]
     if not first_start:
         data = data[-2:]
     update_markets_data(data)
